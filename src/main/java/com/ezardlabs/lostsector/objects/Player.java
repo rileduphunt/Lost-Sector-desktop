@@ -17,6 +17,8 @@ import com.ezardlabs.dethsquare.graphics.Renderer;
 import com.ezardlabs.lostsector.camera.SmartCamera;
 import com.ezardlabs.lostsector.effects.Dust;
 import com.ezardlabs.lostsector.objects.warframes.Warframe;
+import com.ezardlabs.lostsector.objects.weapons.melee.Fists;
+import com.ezardlabs.lostsector.objects.weapons.melee.Nikana;
 import com.ezardlabs.lostsector.objects.weapons.primary.Gorgon;
 import com.ezardlabs.lostsector.objects.weapons.primary.Lanka;
 import com.ezardlabs.lostsector.objects.weapons.primary.Supra;
@@ -163,10 +165,20 @@ public class Player extends Script {
 				warframe.setPrimaryWeapon(new Gorgon());
 			}
 		}
+
+		if(stateMachine.getState() != State.MELEE && stateMachine.getState() !=  State.MELEE_STOW && stateMachine.getState() !=  State.MELEE_WAITING)
+		{
+			if (Input.getKeyDown(KeyCode.F4)){
+				warframe.setMeleeWeapon((new Nikana(gameObject)));
+			} else if (Input.getKeyDown(KeyCode.F5)){
+				warframe.setMeleeWeapon((new Fists(gameObject)));
+			}
+
+		}
 	}
 
 	private int getMovement() {
-		return (Input.getKey(KeyCode.A) ? -1 : 0) + (Input.getKey(KeyCode.D) ? 1 : 0);
+		return (Input.getControl(Input.ControlCode.LEFT) ? -1 : 0) + (Input.getControl(Input.ControlCode.RIGHT) ? 1 : 0);
 	}
 
 	private void jump() {
@@ -179,15 +191,15 @@ public class Player extends Script {
 	}
 
 	private boolean runCheck() {
-		return Input.getKey(KeyCode.A) || Input.getKey(KeyCode.D);
+		return Input.getControl(Input.ControlCode.LEFT) || Input.getControl(Input.ControlCode.RIGHT);
 	}
 
 	private boolean jumpCheck() {
-		return jumpCount == 0 && Input.getKeyDown(KeyCode.SPACE);
+		return jumpCount == 0 && Input.getControlDown(Input.ControlCode.JUMP);
 	}
 
 	private boolean doubleJumpCheck() {
-		return jumpCount == 1 && Input.getKeyDown(KeyCode.SPACE);
+		return jumpCount == 1 && Input.getControlDown(Input.ControlCode.JUMP);
 	}
 
 	private boolean fallCheck() {
@@ -195,37 +207,37 @@ public class Player extends Script {
 	}
 
 	private boolean meleeCheck() {
-		return Input.getKey(KeyCode.MOUSE_LEFT);
+		return Input.getControl(Input.ControlCode.MELEE);
 	}
 
 	private boolean shootCheck() {
-		return Input.getKeyDown(KeyCode.MOUSE_RIGHT);
+		return Input.getControlDown(Input.ControlCode.SHOOT);
 	}
 
 	private void ability1Check() {
-		if (Input.getKeyDown(KeyCode.ALPHA_1) && warframe.hasEnergy(5)) {
+		if (Input.getControlDown(Input.ControlCode.ABILITY_1) && warframe.hasEnergy(5)) {
 			warframe.removeEnergy(5);
 			warframe.ability1();
 		}
 	}
 
 	private void ability2Check() {
-		if (Input.getKeyDown(KeyCode.ALPHA_2) && warframe.hasEnergy(10)) {
+		if (Input.getControlDown(Input.ControlCode.ABILITY_2) && warframe.hasEnergy(10)) {
 			warframe.removeEnergy(10);
 			warframe.ability2();
 		}
 	}
 
 	private void ability3Check() {
-		if (Input.getKeyDown(KeyCode.ALPHA_3) && warframe.hasEnergy(25)) {
+		if (Input.getControlDown(Input.ControlCode.ABILITY_3) && warframe.hasEnergy(25)) {
 			warframe.removeEnergy(25);
 			warframe.ability3();
 		}
 	}
 
 	private void ability4Check() {
-		/*if ((state == State.IDLE || state == State.RUNNING) && Input.getKeyDown(KeyCode.ALPHA_4) &&
-				warframe.hasEnergy(50)) {
+		/*if ((state == State.IDLE || state == State.RUNNING) && Input.getControlDown(Input.ControlCode.ABILITY_4) &&
+			warframe.hasEnergy(50)) {
 			warframe.removeEnergy(50);
 			warframe.ability4();
 			state = State.CASTING;

@@ -89,16 +89,18 @@ public abstract class Warframe extends ShieldedEntity {
 	}
 
 	public final void setPrimaryWeapon(PrimaryWeapon primaryWeapon) {
-		if (primary == null) {
-			primary = GameObject.instantiate(new GameObject("Primary Weapon", new Renderer(), new Animator()),
-					transform.position);
-			primary.transform.setParent(transform);
-		} else {
-			primary.removeComponent(primaryClass);
+		if(this.primaryClass != primaryWeapon.getClass()) {
+			if (primary == null) {
+				primary = GameObject.instantiate(new GameObject("Primary Weapon", new Renderer(), new Animator()),
+						transform.position);
+				primary.transform.setParent(transform);
+			} else {
+				primary.removeComponent(primaryClass);
+			}
+			primary.addComponent(primaryWeapon);
+			this.primaryWeapon = primaryWeapon;
+			this.primaryClass = primaryWeapon.getClass();
 		}
-		primary.addComponent(primaryWeapon);
-		this.primaryWeapon = primaryWeapon;
-		this.primaryClass = primaryWeapon.getClass();
 	}
 
 	public PrimaryWeapon getPrimaryWeapon() {

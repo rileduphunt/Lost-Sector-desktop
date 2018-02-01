@@ -30,7 +30,7 @@ public class Gorgon extends PrimaryWeapon {
 				switch (currentFrame) {
 					case 0:
 					case 1:
-						holstering = !Input.getKey(KeyCode.MOUSE_RIGHT);
+						holstering = !Input.getControl(Input.ControlCode.SHOOT);
 						if (holstering) {
 							return currentFrame - 1;
 						} else {
@@ -47,7 +47,7 @@ public class Gorgon extends PrimaryWeapon {
 					case 5:
 						return currentFrame + 1;
 					case 6:
-						if (Input.getKey(KeyCode.MOUSE_RIGHT)) {
+						if (Input.getControl(Input.ControlCode.SHOOT)) {
 							return 2;
 						} else {
 							holstering = true;
